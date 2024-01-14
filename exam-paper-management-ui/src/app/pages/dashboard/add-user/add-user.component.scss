@@ -1,0 +1,27 @@
+.close {
+  float: right;
+}
+
+.dropdown {
+  width: 30%;
+  min-width: 150px;
+  padding: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.384);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 15px;
+}
+
+.field {
+  display: flex;
+  gap: 20px;
+  padding: 10px;
+  align-items: center;
+}
+::ng-deep .mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #767070;
+}

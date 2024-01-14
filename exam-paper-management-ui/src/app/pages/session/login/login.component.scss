@@ -1,0 +1,54 @@
+.container {
+  height: 98vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(../../../../assets/images/background.jpg);
+  background-size: cover;
+  left: 0;
+  z-index: 2;
+}
+
+.card {
+  display: flex;
+  height: 500px;
+  width: 800px;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 50px;
+}
+
+::ng-deep .mat-icon {
+  border-width: 0px;
+}
+
+::ng-deep .mat-form-field {
+  width: 400px;
+}
+
+::ng-deep .mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #000000;
+}
+
+@media screen and (max-width: 768px) {
+  .background {
+    background-size: contain;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .background {
+    background-size: auto;
+  }
+}

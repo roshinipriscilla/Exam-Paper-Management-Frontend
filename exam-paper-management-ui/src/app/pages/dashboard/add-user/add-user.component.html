@@ -1,0 +1,99 @@
+<button mat-icon-button class="close" [mat-dialog-close]="true">
+  <mat-icon color="warn">close</mat-icon>
+</button>
+
+<div class="card">
+  <span style="font-weight: bold">ADD USER</span>
+  <form
+    #myform
+    [formGroup]="addNewUserForm"
+    fxLayout="column"
+    fxLayoutAlign="space-between"
+  >
+    <div class="field">
+      <span style="width: 65px">Role</span>
+      <mat-select class="dropdown" formControlName="role" required>
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let role of roleList"
+          [value]="role.role"
+        >
+          {{ role.role }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addNewUserForm.controls['role'].hasError('required') &&
+            addNewUserForm.controls['role'].touched
+          "
+        >
+          Please select a role
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Name </span>
+      <input formControlName="userName" class="dropdown" required />
+      <mat-error>
+        <span
+          *ngIf="
+            addNewUserForm.controls['userName'].hasError('required') &&
+            addNewUserForm.controls['userName'].touched
+          "
+        >
+          Please enter the name
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Email </span>
+      <input formControlName="email" class="dropdown" required />
+      <mat-error>
+        <span
+          *ngIf="
+            addNewUserForm.controls['email'].touched &&
+            addNewUserForm.controls['email'].hasError('pattern')
+          "
+        >
+          Invalid Email Id
+        </span>
+        <span
+          *ngIf="
+            addNewUserForm.controls['email'].hasError('required') &&
+            addNewUserForm.controls['email'].touched
+          "
+        >
+          Please enter the Email Id
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Department</span>
+      <mat-select class="dropdown" formControlName="department" required>
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let dept of departmentList"
+          [value]="dept?._id"
+        >
+          {{ dept?.department }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addNewUserForm.controls['department'].hasError('required') &&
+            addNewUserForm.controls['department'].touched
+          "
+        >
+          Please select a department
+        </span>
+      </mat-error>
+    </div>
+    <div fxFlex="100" style="display: flex; justify-content: center">
+      <button mat-raised-button color="primary" (click)="submit()">
+        SUBMIT
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,22 @@
+<mat-toolbar class="topbar">
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="beforeMenu"
+    class="example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon"
+    (click)="updateNotification()"
+  >
+    <mat-icon>notifications</mat-icon>
+    <div class="notification-count-wrapper" *ngIf="unreadNotificationCount > 0">
+      <span class="notification-count">{{ unreadNotificationCount }}</span>
+    </div>
+  </button>
+  <mat-menu #beforeMenu="matMenu" xPosition="before" class="menu">
+    <ng-container *ngFor="let notification of notificationData; let i = index">
+      <button mat-menu-item class="mr-40" style="font-size: 13px">
+        {{ notification?.message }}
+      </button>
+      <div *ngIf="i !== notificationData.length - 1" class="menu-divider"></div>
+    </ng-container>
+  </mat-menu>
+</mat-toolbar>

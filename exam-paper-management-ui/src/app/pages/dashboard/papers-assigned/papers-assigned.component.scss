@@ -1,0 +1,35 @@
+::ng-deep .mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #767070;
+}
+
+.searchbar {
+  width: 35%;
+  height: 30px;
+  outline: none;
+  border: 0px;
+  border-bottom: 1px solid black;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.hoverable {
+  cursor: pointer;
+}
+.button {
+  display: flex;
+  justify-content: right;
+  padding: 15px;
+  padding-right: 0px;
+  gap: 10px;
+}

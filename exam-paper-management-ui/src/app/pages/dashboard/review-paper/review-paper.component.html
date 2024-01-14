@@ -1,0 +1,237 @@
+<div class="container">
+  <app-sidebar class="sidebar"></app-sidebar>
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    <div *ngIf="!isData" class="noData">NO PAPERS SELECTED FOR REVIEW</div>
+    <div *ngIf="!inReview && role != 'Admin'" class="noData">
+      NOT IN REVIEW STATE
+    </div>
+    <div
+      *ngIf="isData && (inReview || role === 'Admin')"
+      class="preview-container"
+    >
+      <div class="review-container">
+        <div
+          class="previewBox"
+          *ngIf="
+            !questionsByComment['questions'].length &&
+            !questionsByComment['fileData']
+          "
+        >
+          <div class="preview-header">
+            {{ rowData["subject"] }}
+            <span style="font-size: 13px; font-weight: 400">{{
+              rowData["course"]
+            }}</span>
+          </div>
+          <div *ngIf="questions.length" class="preview-content scroll">
+            <span
+              *ngFor="let value of questions; let i = index"
+              style="display: flex; justify-content: space-between; gap: 10px"
+            >
+              <span style="width: 90%"> {{ i + 1 }}. {{ value }} </span>
+            </span>
+          </div>
+          <div *ngIf="!questions.length && !fileData" class="noData">
+            PAPER HAS NOT YET SET
+          </div>
+          <div *ngIf="fileData" class="noData">
+            <img
+              src="../../../assets/icons/word.png"
+              alt="File Icon"
+              (click)="onDownloadFile()"
+              style="cursor: pointer; width: 40px; height: 40px"
+            />
+            <a href="{{ fileData }}" target="_blank">{{ fileName }}</a>
+          </div>
+        </div>
+        <div
+          *ngIf="isComment || feedbacks.length"
+          class="previewBox commentBox"
+        >
+          <div
+            class="previewBox"
+            style="width: 100%; height: 70%"
+            *ngIf="feedbacks.length"
+          >
+            <div class="preview-header">Comments</div>
+            <div class="preview-content scroll">
+              <span
+                *ngFor="let value of feedbacks; let i = index"
+                style="display: flex; flex-direction: column; gap: 5px"
+              >
+                <span
+                  style="
+                    width: 90%;
+                    display: flex;
+                    justify-content: space-between;
+                  "
+                >
+                  <span style="font-weight: bold">
+                    {{ value["reviewer"] }}:
+                  </span>
+                  <span>{{ value["date"] }}</span>
+                </span>
+                <span
+                  style="width: 90%; margin-left: 3em"
+                  class="hoverable"
+                  [class.hoverChange]="hoveredIndex === i || clickedIndex === i"
+                  (mouseover)="onMouseOver(i)"
+                  (mouseout)="onMouseOut()"
+                  (click)="
+                    getQuestionPaperByComment(value['questionPaperId'], i)
+                  "
+                >
+                  &nbsp;{{ value["feedback"] }}
+                </span>
+              </span>
+            </div>
+          </div>
+          <div *ngIf="isComment" class="header">ADD COMMENT</div>
+          <form
+            *ngIf="isComment"
+            #myform
+            [formGroup]="addCommentForm"
+            fxLayout="column"
+            fxLayoutAlign="space-between"
+          >
+            <div style="height: 100%">
+              <textarea
+                formControlName="comment"
+                class="card user-input"
+                required
+                (input)="onCommentInputChange($event)"
+              ></textarea>
+              <div class="button">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="onAddComment()"
+                  [disabled]="!isCommentValid"
+                >
+                  SUBMIT
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="preview-container"
+          style="width: 50%"
+          *ngIf="
+            questionsByComment['questions'].length ||
+            questionsByComment['fileData']
+          "
+        >
+          <div style="width: 100%">
+            <button mat-icon-button class="close" (click)="onClose()">
+              <mat-icon color="warn">close</mat-icon>
+            </button>
+          </div>
+          <div class="header">
+            QUESTION PAPER PREVIEW - version :
+            {{ questionsByComment["version"] }}
+          </div>
+          <div style="height: 100%; width: 100%">
+            <div class="previewBox" style="width: 100%">
+              <div class="preview-header">
+                {{ rowData["subject"] }}
+                <span style="font-size: 13px; font-weight: 400">{{
+                  rowData["course"]
+                }}</span>
+              </div>
+              <div
+                *ngIf="questionsByComment['questions'].length"
+                class="preview-content scroll"
+              >
+                <span
+                  *ngFor="
+                    let value of questionsByComment['questions'];
+                    let i = index
+                  "
+                  style="display: flex; justify-content: space-between"
+                >
+                  <span> {{ i + 1 }}. {{ value }} </span>
+                </span>
+              </div>
+              <div
+                *ngIf="questionsByComment['fileData']"
+                style="display: flex; align-items: center"
+              >
+                <img
+                  src="../../../assets/icons/word.png"
+                  alt="File Icon"
+                  (click)="onDownloadFile()"
+                  style="cursor: pointer; width: 40px; height: 40px"
+                />
+                <a
+                  href="{{ questionsByComment['fileData'] }}"
+                  target="_blank"
+                  >{{ questionsByComment["fileName"] }}</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="
+          (role === 'Lecturer' && rowData['status'] === 'IN CHECKER REVIEW') ||
+          (role == 'External Examiner' &&
+            rowData['status'] == 'IN EXAMINER REVIEW')
+        "
+        class="button"
+      >
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onApprove()"
+          [disabled]="
+            (!questions.length && !fileData) ||
+            isApproved ||
+            isComment ||
+            feedbackRaised
+          "
+        >
+          {{ isApproved ? "APPROVED" : "APPROVE" }}
+        </button>
+        <button
+          *ngIf="!isApproved"
+          mat-raised-button
+          color="primary"
+          [disabled]="
+            (!questions.length && !fileData) || isComment || feedbackRaised
+          "
+          (click)="onComment()"
+        >
+          COMMENT
+        </button>
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="
+          (role === 'External Examiner' &&
+            rowData['status'] === 'IN CHECKER REVIEW') ||
+          (role === 'Lecturer' && rowData['status'] === 'IN EXAMINER REVIEW')
+        "
+        [disabled]="true"
+      >
+        {{
+          role === "External Examiner" &&
+          rowData["status"] === "IN CHECKER REVIEW"
+            ? "IN CHECKER REVIEW"
+            : "IN EXAMINER REVIEW"
+        }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="rowData['status'] === 'DONE' || role === 'Admin'"
+        [disabled]="true"
+      >
+        {{ role === "Admin" ? rowData["status"] : "APPROVED" }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<button mat-icon-button class="close" [mat-dialog-close]="true">
+  <mat-icon color="warn">close</mat-icon>
+</button>
+
+<div class="card">
+  <span style="font-weight: bold">ADD DEPARTMENT</span>
+  <form
+    #myform
+    [formGroup]="addNewDeptForm"
+    fxLayout="column"
+    fxLayoutAlign="space-between"
+  >
+    <div class="field">
+      <span style="width: 65px">Department </span>
+      <input formControlName="department" class="dropdown" required />
+      <mat-error>
+        <span
+          *ngIf="
+            addNewDeptForm.controls['department'].hasError('required') &&
+            addNewDeptForm.controls['department'].touched
+          "
+        >
+          Please enter the department
+        </span>
+      </mat-error>
+    </div>
+    <div
+      class="field"
+      *ngFor="let courseCtrl of courses.controls; let i = index"
+      [formGroup]="courseCtrl"
+    >
+      <span style="width: 65px">Course </span>
+      <input formControlName="course" class="dropdown" required />
+      <mat-error>
+        <span *ngIf="courseCtrl.hasError('required') && courseCtrl.touched">
+          Please enter the course
+        </span>
+      </mat-error>
+      <button mat-icon-button *ngIf="i != 0" (click)="removeCourse(i)">
+        <mat-icon color="warn">remove_circle</mat-icon>
+      </button>
+      <button mat-icon-button (click)="addCourse()">
+        <mat-icon color="primary">add_circle</mat-icon>
+      </button>
+      <div
+        class="field"
+        *ngFor="
+          let subjectCtrl of courseCtrl.get('subjects').controls;
+          let subjectIndex = index
+        "
+      >
+        <span style="width: 65px">Subject </span>
+        <input
+          class="dropdown"
+          [formControl]="subjectCtrl"
+          placeholder="Enter Subject"
+          required
+        />
+        <button
+          *ngIf="subjectIndex != 0"
+          mat-icon-button
+          (click)="removeSubject(i, subjectIndex)"
+        >
+          <mat-icon color="warn">remove_circle</mat-icon>
+        </button>
+        <button mat-icon-button (click)="addSubject(i)">
+          <mat-icon color="primary">add_circle</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div fxFlex="100" style="display: flex; justify-content: center">
+      <button mat-raised-button color="primary" (click)="submit()">
+        SUBMIT
+      </button>
+    </div>
+  </form>
+</div>

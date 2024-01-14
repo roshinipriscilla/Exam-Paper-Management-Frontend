@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+}
+
+.tableBody {
+  font-size: 12px;
+}
+
+.searchbar {
+  width: 35%;
+  height: 30px;
+  outline: none;
+  border: 0px;
+  border-bottom: 1px solid black;
+}
+
+::ng-deep .mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #767070;
+}
+
+[hidden] {
+  display: none !important;
+}

@@ -1,0 +1,48 @@
+<div style="display: flex">
+  <app-sidebar style="width: 15%"></app-sidebar>
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 15px;
+      padding: 10px;
+    "
+  >
+    <app-topbar></app-topbar>
+
+    <div style="display: flex; justify-content: space-between; padding: 10px">
+      <input
+        class="searchbar"
+        type="text"
+        placeholder="Search"
+        (input)="applyFilter($event)"
+      />
+      <button mat-raised-button color="primary" (click)="addUser()">
+        ADD USER
+      </button>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container
+        [matColumnDef]="column"
+        *ngFor="let column of displayedColumns"
+      >
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <td mat-cell *matCellDef="let emp" class="tableBody">
+          {{ emp[column] || "-" }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+    </table>
+    <div *ngIf="!dataSource || dataSource.data.length === 0" class="noData">
+      NO USERS FOUND
+    </div>
+    <mat-paginator
+      [hidden]="!dataSource || !dataSource.data.length"
+      #paginator
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,315 @@
+<div class="container">
+  <app-sidebar class="sidebar"></app-sidebar>
+  <div class="main-content">
+    <app-topbar></app-topbar>
+    <div *ngIf="!isData" class="noData">
+      NO PAPERS SELECTED FOR SETTING THE PAPER
+    </div>
+
+    <div *ngIf="isData && !feedbacks.length" class="main-content-container">
+      <div class="question-container">
+        <div class="header-container">
+          <mat-card class="card">
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px"
+                >Department</mat-card-title
+              >
+              <mat-card-subtitle>{{
+                rowData["department"].department
+              }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px">Course</mat-card-title>
+              <mat-card-subtitle>{{ rowData["course"] }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px">Subject</mat-card-title>
+              <mat-card-subtitle>{{ rowData["subject"] }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px"
+                >Assigned Date</mat-card-title
+              >
+              <mat-card-subtitle>{{
+                rowData["assignedDate"] | date : "dd-MM-yyyy"
+              }}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+          <mat-card class="card" [class.mat-elevation-z2]>
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px">Setter</mat-card-title>
+              <mat-card-subtitle>{{
+                rowData["setterId"].userName
+              }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px">Checker</mat-card-title>
+              <mat-card-subtitle>{{
+                rowData["checkerId"].userName
+              }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px">Examiner</mat-card-title>
+              <mat-card-subtitle>{{
+                rowData["examinerId"].userName
+              }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-header>
+              <mat-card-title style="font-size: 14px">Due Date</mat-card-title>
+              <mat-card-subtitle>{{
+                rowData["dueDate"] | date : "dd-MM-yyyy"
+              }}</mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
+        <div
+          class="header"
+          style="flex-direction: row; justify-content: space-between"
+        >
+          ADD QUESTION / UPLOAD
+        </div>
+        <form
+          *ngIf="!isQuestionValid && !isReviewRaised"
+          (ngSubmit)="onSubmitPaper()"
+          enctype="multipart/form-data"
+        >
+          <input type="file" (change)="onFileSelected($event)" />
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            *ngIf="selectedFile"
+          >
+            UPLOAD
+          </button>
+        </form>
+        <form
+          #myform
+          [formGroup]="addQuestionForm"
+          fxLayout="column"
+          fxLayoutAlign="space-between"
+        >
+          <textarea
+            formControlName="question"
+            class="question user-input"
+            required
+            (input)="onQuestionInputChange($event)"
+          ></textarea>
+        </form>
+        <div class="button" style="padding: 0px">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onAddQuestion()"
+            [disabled]="!isQuestionValid || isReviewRaised"
+          >
+            ADD
+          </button>
+        </div>
+        <div *ngIf="isLatestComment" style="width: 100%">
+          <div class="header" style="padding: 7px; flex-direction: row">
+            <span style="width: 70%; text-align: left">LATEST COMMENT</span>
+            <span
+              style="
+                font-size: 12px;
+                width: 30%;
+                text-decoration: underline;
+                color: blue;
+              "
+              class="hoverable"
+              (click)="viewAllComments()"
+            >
+              View All Comments
+            </span>
+          </div>
+          <div class="previewBox">
+            <div class="preview-content">
+              <span
+                *ngFor="let value of latestComment; let i = index"
+                style="display: flex; flex-direction: column; gap: 5px"
+              >
+                <span
+                  style="
+                    width: 90%;
+                    display: flex;
+                    justify-content: space-between;
+                  "
+                >
+                  <span style="font-weight: bold">
+                    {{ value["reviewer"] }}:
+                  </span>
+                  <span>{{ value["date"] }}</span>
+                </span>
+                <span style="width: 90%; margin-left: 3em">
+                  &nbsp;{{ value["feedback"] }}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="preview-container">
+        <div class="header">QUESTION PAPER PREVIEW</div>
+        <div style="height: 100%">
+          <div *ngIf="!fileData" class="previewBox">
+            <div class="preview-header">
+              {{ rowData["subject"] }}
+              <span style="font-size: 13px; font-weight: 400">{{
+                rowData["course"]
+              }}</span>
+            </div>
+            <div class="preview-content scroll">
+              <span
+                *ngFor="let value of formFieldValues; let i = index"
+                style="display: flex; justify-content: space-between"
+              >
+                <span> {{ i + 1 }}. {{ value }} </span>
+                <span *ngIf="!isReviewRaised" (click)="onEdit(value, i)">
+                  <img
+                    class="hoverable"
+                    style="height: 15px; width: q5px"
+                    src="../../../assets/icons/edit.png"
+                  />
+                </span>
+              </span>
+            </div>
+          </div>
+          <div *ngIf="fileData" style="display: flex; align-items: center">
+            <img
+              src="../../../assets/icons/word.png"
+              alt="File Icon"
+              (click)="onDownloadFile()"
+              style="cursor: pointer; width: 40px; height: 40px"
+            />
+            <a href="{{ fileData }}" target="_blank">{{ fileName }}</a>
+          </div>
+          <div class="button">
+            <button
+              *ngIf="
+                isQuestionChanged ||
+                (isReviewRaised && rowData['status'] !== 'DONE')
+              "
+              mat-raised-button
+              color="primary"
+              (click)="onSubmitPaper()"
+              [disabled]="!formFieldValues.length || isReviewRaised"
+            >
+              {{
+                isReviewRaised
+                  ? reviewStatus === "APPROVED BY CHECKER"
+                    ? "IN EXAMINER REVIEW"
+                    : reviewStatus === "APPROVED"
+                    ? "APPROVED"
+                    : "IN REVIEW"
+                  : "SUBMIT"
+              }}
+            </button>
+            <button
+              *ngIf="
+                !isReviewRaised &&
+                !isQuestionChanged &&
+                reviewStatus != 'FEEDBACK RAISED' &&
+                (formFieldValues.length || fileData)
+              "
+              mat-raised-button
+              color="primary"
+              (click)="onReview()"
+            >
+              REQUEST FOR REVIEW
+            </button>
+            <button
+              *ngIf="rowData['status'] === 'DONE'"
+              mat-raised-button
+              color="primary"
+              [disabled]="true"
+            >
+              DONE
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isData && feedbacks.length" class="main-content-container">
+      <div class="previewBox" style="width: 50%" *ngIf="feedbacks.length">
+        <div style="width: 100%">
+          <button mat-icon-button class="close" (click)="onClose()">
+            <mat-icon color="warn">close</mat-icon>
+          </button>
+        </div>
+        <div class="preview-header">Comments</div>
+        <div class="preview-content scroll">
+          <span
+            *ngFor="let value of feedbacks; let i = index"
+            style="display: flex; flex-direction: column; gap: 5px"
+          >
+            <span
+              style="width: 90%; display: flex; justify-content: space-between"
+            >
+              <span style="font-weight: bold"> {{ value["reviewer"] }}: </span>
+              <span>{{ value["date"] }}</span>
+            </span>
+            <span
+              style="width: 90%; margin-left: 3em"
+              class="hoverable"
+              [class.hoverChange]="hoveredIndex === i || clickedIndex === i"
+              (mouseover)="onMouseOver(i)"
+              (mouseout)="onMouseOut()"
+              (click)="getQuestionPaperByComment(value['questionPaperId'], i)"
+            >
+              &nbsp;{{ value["feedback"] }}
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="preview-container"
+        *ngIf="
+          questionsByComment['questions'].length ||
+          questionsByComment['fileData']
+        "
+      >
+        <div class="header">
+          QUESTION PAPER PREVIEW - version : {{ questionsByComment["version"] }}
+        </div>
+        <div style="height: 100%">
+          <div class="previewBox">
+            <div class="preview-header">
+              {{ rowData["subject"] }}
+              <span style="font-size: 13px; font-weight: 400">{{
+                rowData["course"]
+              }}</span>
+            </div>
+            <div
+              class="preview-content scroll"
+              *ngIf="questionsByComment['questions'].length"
+            >
+              <span
+                *ngFor="
+                  let value of questionsByComment['questions'];
+                  let i = index
+                "
+                style="display: flex; justify-content: space-between"
+              >
+                <span> {{ i + 1 }}. {{ value }} </span>
+              </span>
+            </div>
+            <div
+              *ngIf="questionsByComment['fileData']"
+              style="display: flex; align-items: center"
+            >
+              <img
+                src="../../../assets/icons/word.png"
+                alt="File Icon"
+                (click)="onDownloadFile()"
+                style="cursor: pointer; width: 40px; height: 40px"
+              />
+              <a href="{{ questionsByComment['fileData'] }}" target="_blank">{{
+                questionsByComment["fileName"]
+              }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

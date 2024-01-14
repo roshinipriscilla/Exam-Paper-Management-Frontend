@@ -1,0 +1,229 @@
+<button mat-icon-button class="close" [mat-dialog-close]="true">
+  <mat-icon color="warn">close</mat-icon>
+</button>
+
+<div class="card">
+  <span style="font-weight: bold">ASSIGN EXAMINATION PAPER TO A LECTURER</span>
+  <form
+    #myform
+    [formGroup]="addPaperForm"
+    fxLayout="column"
+    fxLayoutAlign="space-between"
+  >
+    <div class="field">
+      <span style="width: 65px">Department</span>
+      <mat-select
+        class="dropdown"
+        (selectionChange)="onDepartmentChange($event.value)"
+        formControlName="department"
+        required
+      >
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let dept of departmentList"
+          [value]="dept?._id"
+        >
+          {{ dept?.department }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addPaperForm.controls['department'].hasError('required') &&
+            addPaperForm.controls['department'].touched
+          "
+        >
+          Please select a department
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Course</span>
+      <mat-select
+        class="dropdown"
+        (selectionChange)="onCourseChange($event.value)"
+        formControlName="course"
+        required
+      >
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let course of courseList"
+          [value]="course.course"
+        >
+          {{ course.course }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addPaperForm.controls['course'].hasError('required') &&
+            addPaperForm.controls['course'].touched
+          "
+        >
+          Please select a course
+        </span>
+        <span *ngIf="addPaperForm.controls['department'].hasError('required')">
+          Please select the department first
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Subject</span>
+      <mat-select class="dropdown" formControlName="subject" required>
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let sub of subjectList"
+          [value]="sub"
+        >
+          {{ sub }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addPaperForm.controls['subject'].hasError('required') &&
+            addPaperForm.controls['subject'].touched
+          "
+        >
+          Please select a subject
+        </span>
+        <span *ngIf="addPaperForm.controls['course'].hasError('required')">
+          Please select the course first
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Setter</span>
+      <mat-select class="dropdown" formControlName="setter" required>
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let lecturer of lecturersList"
+          [value]="lecturer?._id"
+        >
+          {{ lecturer?.userName }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addPaperForm.controls['setter'].hasError('required') &&
+            addPaperForm.controls['setter'].touched
+          "
+        >
+          Please select a setter
+        </span>
+        <span *ngIf="addPaperForm.controls['department'].hasError('required')">
+          Please select the department first
+        </span>
+        <span
+          *ngIf="
+            addPaperForm.controls['checker'].value ===
+              addPaperForm.controls['setter'].value &&
+            addPaperForm.controls['checker'].touched
+          "
+        >
+          Setter and checker cannot be the same
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Checker</span>
+      <mat-select class="dropdown" formControlName="checker" required>
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let lecturer of lecturersList"
+          [value]="lecturer?._id"
+        >
+          {{ lecturer?.userName }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addPaperForm.controls['checker'].hasError('required') &&
+            addPaperForm.controls['checker'].touched
+          "
+        >
+          Please select a checker
+        </span>
+        <span *ngIf="addPaperForm.controls['department'].hasError('required')">
+          Please select the department first
+        </span>
+        <span
+          *ngIf="
+            addPaperForm.controls['checker'].value ===
+              addPaperForm.controls['setter'].value &&
+            addPaperForm.controls['checker'].touched
+          "
+        >
+          Setter and checker cannot be the same
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">External Examiner</span>
+      <mat-select class="dropdown" formControlName="examiner" required>
+        <mat-option
+          style="font-size: 13px"
+          *ngFor="let examiner of examinersList"
+          [value]="examiner?._id"
+        >
+          {{ examiner?.userName }}
+        </mat-option>
+      </mat-select>
+      <mat-error>
+        <span
+          *ngIf="
+            addPaperForm.controls['examiner'].hasError('required') &&
+            addPaperForm.controls['examiner'].touched
+          "
+        >
+          Please select a examiner
+        </span>
+        <span *ngIf="addPaperForm.controls['department'].hasError('required')">
+          Please select the department first
+        </span>
+      </mat-error>
+    </div>
+    <div class="field">
+      <span style="width: 65px">Due Date</span>
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dueDate"
+          (dateChange)="onDateChange($event)"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-error>
+        <span
+          *ngIf="
+            addPaperForm.controls['dueDate'].hasError('required') &&
+            addPaperForm.controls['dueDate'].touched
+          "
+        >
+          Choose a Due Date
+        </span>
+        <span *ngIf="dateError">Due date must be later than today.</span>
+      </mat-error>
+    </div>
+    <div fxFlex="100" style="display: flex; justify-content: center">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submit()"
+        [disabled]="!addPaperForm.valid"
+      >
+        SUBMIT
+      </button>
+    </div>
+  </form>
+</div>

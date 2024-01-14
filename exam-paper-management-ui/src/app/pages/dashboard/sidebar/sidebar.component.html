@@ -1,0 +1,88 @@
+<div class="sidebar">
+  <div class="accountIcon">
+    <img
+      class="hoverable"
+      style="height: 60px"
+      src="../../../../assets/icons/account.png"
+      (click)="onAccountClick()"
+    />
+    {{ userName }}
+    <div *ngIf="showLogoutButton">
+      <button class="hoverable" (click)="logout()">Logout</button>
+    </div>
+  </div>
+  <!-- <a
+    class="sidebarTab hoverable"
+    routerLink="/dashboard/home"
+    routerLinkActive="highlighted"
+  >
+    <img
+      style="height: 30px; width: 30px"
+      src="../../../assets/icons/home.png"
+    />
+    Home
+  </a> -->
+  <div routerLinkActive="highlighted">
+    <a
+      class="sidebarTab hoverable"
+      routerLink="/dashboard/papersAssigned"
+      *ngIf="!(role === 'External Examiner')"
+    >
+      <img
+        style="height: 30px; width: 30px"
+        src="../../../assets/icons/document.png"
+      />
+      Papers Assigned
+    </a>
+    <a
+      class="sidebarTab hoverable"
+      routerLink="/dashboard/setPaper"
+      *ngIf="!(role === 'External Examiner')"
+      style="display: none"
+    >
+      <img
+        style="height: 30px; width: 30px"
+        src="../../../assets/icons/document.png"
+      />
+      Papers Assigned
+    </a>
+  </div>
+  <div routerLinkActive="highlighted">
+    <a
+      class="sidebarTab hoverable"
+      routerLink="/dashboard/papersForReview"
+      *ngIf="!(role === 'Admin')"
+    >
+      <img
+        style="height: 30px; width: 30px"
+        src="../../../assets/icons/review.png"
+      />
+      Papers for Review
+    </a>
+    <a
+      class="sidebarTab hoverable"
+      routerLink="/dashboard/reviewPaper"
+      *ngIf="!(role === 'Admin')"
+      style="display: none"
+    >
+      <img
+        style="height: 30px; width: 30px"
+        src="../../../assets/icons/review.png"
+      />
+      Papers for Review
+    </a>
+  </div>
+
+  <a
+    class="sidebarTab hoverable"
+    routerLink="/dashboard/users"
+    routerLinkActive="highlighted"
+    *ngIf="role === 'Admin'"
+  >
+    <img
+      style="height: 30px; width: 30px"
+      src="../../../assets/icons/group.png"
+    />
+    Users
+  </a>
+</div>

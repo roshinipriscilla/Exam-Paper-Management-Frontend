@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="background"></div>
+  <div class="card">
+    <img src="../../../../assets/icons/account.png" />
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="p-10"
+      fxLayout="column"
+      fxLayoutGap="8px"
+    >
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+        "
+      >
+        <mat-form-field class="mat-form-field">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error>
+            <span
+              *ngIf="
+                loginForm.controls['email'].touched &&
+                loginForm.controls['email'].hasError('pattern')
+              "
+            >
+              Invalid Email Id
+            </span>
+            <span
+              *ngIf="
+                loginForm.controls['email'].hasError('required') &&
+                loginForm.controls['email'].touched
+              "
+            >
+              Please Enter Email Id
+            </span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+          />
+          <button
+            class="mat-icon"
+            style="outline: none"
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error>
+            <span
+              *ngIf="
+                loginForm.controls['password'].hasError('required') &&
+                loginForm.controls['password'].touched
+              "
+            >
+              Please Enter password
+            </span>
+            <span
+              *ngIf="
+                loginForm.controls['password'].touched &&
+                loginForm.controls['password'].hasError('pattern')
+              "
+            >
+              password length should be Minimum 8 , Must Includes number and
+              special charcters
+            </span>
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary">SIGN IN</button>
+      </div>
+    </form>
+  </div>
+</div>

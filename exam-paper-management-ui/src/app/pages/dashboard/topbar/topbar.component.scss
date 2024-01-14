@@ -1,0 +1,29 @@
+.topbar {
+  background-color: white;
+  justify-content: end;
+  height: 40px;
+}
+.notification-count-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-count {
+  position: absolute;
+  top: -32px;
+  right: -8px;
+  min-width: 12px;
+  height: 12px;
+  padding: 2px;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+  background-color: red;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.menu-divider {
+  margin: 8px 0;
+  border-bottom: 1px solid #ccc;
+}

@@ -1,0 +1,138 @@
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 15%;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  padding: 10px;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-weight: bold;
+  font-size: 15px;
+}
+.header {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.preview-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  height: 90%;
+}
+.preview-header {
+  height: 10%;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: Times New Roman, Times, serif;
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.preview-content {
+  height: 90%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: Times New Roman, Times, serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+.scroll {
+  overflow-y: auto;
+}
+.scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background-color: #eee;
+}
+.previewBox {
+  height: 100%;
+  width: 50%;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+.commentBox {
+  height: 95%;
+  gap: 15px;
+  padding: 15px;
+}
+.hoverable {
+  cursor: pointer;
+}
+.hoverChange {
+  color: blue;
+  text-decoration: underline;
+}
+.user-input {
+  font-size: 16px;
+  color: #4c5c50;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.comment {
+  width: 90%;
+  padding: 7px;
+  height: 90%;
+  border: 0.5px solid rgba(0, 0, 0, 0.384);
+}
+.button {
+  display: flex;
+  justify-content: right;
+  padding: 15px;
+  padding-right: 0px;
+  gap: 10px;
+}
+.review-container {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+::ng-deep .mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: #767070;
+}
+.user-input {
+  font-size: 16px;
+  color: #4c5c50;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.card {
+  width: 100%;
+  height: 80%;
+}
+textarea:focus {
+  outline: 0;
+}
+.close {
+  float: right;
+}
